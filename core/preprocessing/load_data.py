@@ -2,11 +2,11 @@ import pandas as pd
 from datetime import date
 
 def load_basic_df() -> pd.DataFrame:
-    df = pd.read_csv("loading/results.csv")
+    df = pd.read_csv("resources/results.csv")
     return df.dropna()
 
 def load_shootouts() -> pd.DataFrame:
-    df = pd.read_csv("loading/shootouts.csv")
+    df = pd.read_csv("resources/shootouts.csv")
     return df.dropna()
 
 def load_df_with_shootouts() -> pd.DataFrame:
