@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 from typing import Dict, Tuple
 
 from core.preprocessing import find_unique_countries
