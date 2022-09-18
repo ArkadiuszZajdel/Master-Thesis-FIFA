@@ -57,6 +57,9 @@ def _set_conditions_real_scores06(df: pd.DataFrame) -> Dict[str,List[pd.Series]]
         'W_away_real': [(df["W_away"] > 1), (df["W_away"] == 1), (df["W_away"] < 1)]
     }
 
+def set_simulation_years06(start_year: int, finish_year: int) -> List[str]:
+    return [str(year+1)+'-01-01' for year in range(start_year+1, finish_year+1)]
+
 
 def find_unique_countries(df: pd.DataFrame) -> List[str]:
     unique1 = pd.unique(df["home_team"])
@@ -66,7 +69,7 @@ def find_unique_countries(df: pd.DataFrame) -> List[str]:
 
 def tournament(df: pd.DataFrame, friendly: float, nl: float, quali: float, continental: float,
 worldcup: float, other: float) -> pd.DataFrame:
-    df["I"] = df.apply(lambda row: _add_tournament_parameter(row.tournament, friendly, nl, quali, continental, worldcup, other), axis = 1)
+    df["tournament_parameter"] = df.apply(lambda row: _add_tournament_parameter(row.tournament, friendly, nl, quali, continental, worldcup, other), axis = 1)
     return df
 
 def _add_tournament_parameter(row_tournament: str, friendly: float, nl: float,
