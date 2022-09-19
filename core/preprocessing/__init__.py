@@ -1,2 +1,2 @@
 from core.preprocessing.load_data import load_basic_df, load_df_with_shootouts, load_shootouts, select_date, load_and_set_confederation
-from core.preprocessing.conditions import add_conditions93, find_unique_countries
+from core.preprocessing.conditions import find_unique_countries

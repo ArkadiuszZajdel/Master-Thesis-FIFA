@@ -26,6 +26,7 @@ def _set_conditions93(df: pd.DataFrame) -> List[pd.Series]:
         (df["diff"] < 0)
         ]
 
+
 #fifa06
 def add_conditions06(df: pd.DataFrame, points: List[int]) -> pd.DataFrame:
     df.loc[:,"diff"] = df["home_score"] - df["away_score"]
@@ -45,10 +46,18 @@ def add_conditions06(df: pd.DataFrame, points: List[int]) -> pd.DataFrame:
 
 def _set_conditions06(df: pd.DataFrame) -> Dict[str,List[pd.Series]]:
     return {
-        'W_home': [(df["diff"] > 0), (df["home_team"] == df["winner"]),
-        ((df["diff"] == 0) & (df["winner"]!=df["home_team"])), (df["diff"] < 0)],
-        'W_away': [(df["diff"] > 0), ((df["diff"] == 0) & (df["winner"] != df["away_team"])),
-        (df["away_team"] == df["winner"]), (df["diff"] < 0)]
+        'W_home': [
+            (df["diff"] > 0),
+            (df["home_team"] == df["winner"]),
+            ((df["diff"] == 0) & (df["winner"]!=df["home_team"])),
+            (df["diff"] < 0)
+        ],
+        'W_away': [
+            (df["diff"] > 0),
+            ((df["diff"] == 0) & (df["winner"] != df["away_team"])),
+            (df["away_team"] == df["winner"]),
+            (df["diff"] < 0)
+        ]
     }
 
 def _set_conditions_real_scores06(df: pd.DataFrame) -> Dict[str,List[pd.Series]]:
@@ -59,6 +68,36 @@ def _set_conditions_real_scores06(df: pd.DataFrame) -> Dict[str,List[pd.Series]]
 
 def set_simulation_years06(start_year: int, finish_year: int) -> List[str]:
     return [str(year+1)+'-01-01' for year in range(start_year+1, finish_year+1)]
+
+
+#fifa current
+def add_conditions_current(df: pd.DataFrame, points: List[float]) -> pd.DataFrame:
+    df.loc[:,"diff"] = df["home_score"] - df["away_score"]
+
+    conditions = _set_conditions_current(df)
+    values1 = points.copy() # for example [1,0.75,0.5,0]
+    points.reverse()
+    values2 = points #[0,0.5,0.75,1]
+    df.loc[:,list(conditions.keys())[0]] = np.select(list(conditions.values())[0], values1)
+    df.loc[:,list(conditions.keys())[1]] = np.select(list(conditions.values())[1], values2)
+
+    return df.copy()
+
+def _set_conditions_current(df: pd.DataFrame) -> Dict[str,List[pd.Series]]:
+    return {
+        'W_home': [
+            (df["diff"] > 0),
+            (df["home_team"] == df["winner"]),
+            ((df["diff"] == 0) & (df["winner"] != df["home_team"])),
+            (df["diff"] < 0)
+        ],
+        'W_away': [
+            (df["diff"] > 0),
+            ((df["diff"] == 0) & (df["winner"] != df["away_team"])),
+            (df["away_team"] == df["winner"]),
+            (df["diff"] < 0)
+        ]
+    }
 
 
 def find_unique_countries(df: pd.DataFrame) -> List[str]:
