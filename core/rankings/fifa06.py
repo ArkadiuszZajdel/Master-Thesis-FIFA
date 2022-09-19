@@ -5,7 +5,7 @@ from typing import Dict, Tuple, List
 from core.preprocessing import find_unique_countries, load_and_set_confederation
 from core.rankings.elo import calculate_elo_probability
 
-class Estimate06:
+class FIFA06:
     def __init__(self, df: pd.DataFrame, importance: int, sensitivity: int, home_buff: int, simulation_years: List[str]):
         self.df = df
         self.importance = importance
@@ -27,8 +27,8 @@ class Estimate06:
                
         self.df['We_home'], self.df['We_away'] = zip(*self.df.apply(lambda row: self._update_after_match06(row.date,
                     row.home_team, row.away_team, row.neutral, row.W_home, row.W_away, row.tournament_parameter), axis = 1))
-        self.df["W_home_real-We_home"] = self.df["W_home_real"] - self.df["We_home"] #mozliwe ze tylko do mse
-        self.df["W_away_real-We_away"] = self.df["W_away_real"] - self.df["We_away"] #tez
+        self.df["W_home_real-We_home"] = self.df["W_home_real"] - self.df["We_home"] #only for mse
+        self.df["W_away_real-We_away"] = self.df["W_away_real"] - self.df["We_away"] #same
         
         ranking_dict = dict(zip(self.ranking.index, self.ranking.overall))
         return(self.df, ranking_dict)
@@ -46,7 +46,7 @@ class Estimate06:
         self.places.extend([150]*(len(self.unique_countries)-150))
             
     def _update_after_match06(self, date: str, home_team: str, away_team: str, neutral: bool,
-    home_score: float, away_score: float, tournament_parameter: float) -> Tuple[float, float]:
+    home_score: int, away_score: int, tournament_parameter: float) -> Tuple[float, float]:
         if date > self.simulation_years[self.year_indicator]:
             self._update_ranking_components_after_year06()
             self.year_indicator += 1
@@ -72,7 +72,7 @@ class Estimate06:
         self.ranking['place'] = self.places
 
     def _update_ranking_components_after_match06(self, actual_year: str, first_year: str,
-    home_team: str, home_score: float, away_team: str, away_score: float,
+    home_team: str, home_score: int, away_team: str, away_score: int,
     tournament_parameter: float) -> None:
         if actual_year >= first_year:
             self.ranking.loc[home_team, "1"] += home_score * tournament_parameter * (200-self.ranking.loc[away_team,'place']) * self.confs.loc[away_team,"c"]
