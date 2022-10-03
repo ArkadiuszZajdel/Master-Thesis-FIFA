@@ -16,6 +16,7 @@ class FIFA93:
 
     def estimate93(self) -> Tuple[pd.DataFrame, Dict[str, int]]:
         self.df['We_home'] = self.df.apply(lambda row: self._calculate_elo_probability_and_update_ranking(row.home_team, row.W_home, row.away_team, row.W_away, row.neutral), axis = 1)
+        self.df['We_away'] = 1 - self.df['We_home']
         self.df["W-We_home"] = self.df["W"] - self.df["We_home"] #nozliwe ze nie potrzebne bo to tylko do mse
         return self.df, self.ranking
 

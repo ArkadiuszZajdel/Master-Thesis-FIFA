@@ -1,0 +1,17 @@
+{
+    "PATHS":
+    {
+        "PATH_TO_RESULTS": "resources/results.csv",
+        "PATH_TO_SHOOTOUTS": "resources/shootouts.csv",
+        "PATH_TO_CONFEDERATIONS": "resources/confederation.pickle"
+    },
+    "PREDICTION_PARAMS":
+    {
+        "THRESHOLD_HOME": 0.93,
+        "THRESHOLD_AWAY": 0.07,
+        "THRESHOLD_NEUTRAL": 0.8,
+        "POLYNOMIAL_REGRESSION_DEGREE_HOME": 3,
+        "POLYNOMIAL_REGRESSION_DEGREE_AWAY": 3,
+        "POLYNOMIAL_REGRESSION_DEGREE_NEUTRAL": 2
+    }
+}

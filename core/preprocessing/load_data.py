@@ -2,13 +2,14 @@ import pandas as pd
 from datetime import date
 import pickle
 from core.preprocessing.conditions import find_unique_countries
+from resources.config import PATHS
 
 def load_basic_df() -> pd.DataFrame:
-    df = pd.read_csv("resources/results.csv")
+    df = pd.read_csv(PATHS["PATH_TO_RESULTS"])
     return df.dropna()
 
 def load_shootouts() -> pd.DataFrame:
-    df = pd.read_csv("resources/shootouts.csv")
+    df = pd.read_csv(PATHS["PATH_TO_SHOOTOUTS"])
     return df.dropna()
 
 def load_df_with_shootouts() -> pd.DataFrame:
@@ -21,7 +22,7 @@ def select_date(df: pd.DataFrame, date: date) -> pd.DataFrame:
 
 def load_and_set_confederation(df: pd.DataFrame) -> pd.DataFrame:
     try:
-        confs = pickle.load(open("resources/confederation.pickle", "rb"))
+        confs = pickle.load(open(PATHS["PATH_TO_CONFEDERATIONS"], "rb"))
     except FileNotFoundError:
         asia=pd.read_html("https://en.wikipedia.org/wiki/Asian_Football_Confederation")
         asia=asia[4].Name
@@ -63,5 +64,5 @@ def load_and_set_confederation(df: pd.DataFrame) -> pd.DataFrame:
         africa=africa.set_index("Country")
 
         confs=pd.concat([confs,africa])
-        pickle.dump(confs, open("resources/confederation.pickle", "wb"))
+        pickle.dump(confs, open(PATHS["PATH_TO_CONFEDERATIONS"], "wb"))
     return confs

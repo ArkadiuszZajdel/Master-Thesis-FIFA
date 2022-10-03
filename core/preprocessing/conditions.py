@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 from typing import List, Dict
-from core.preprocessing.enums import Ranking
 
 #fifa93
 def add_conditions93(df: pd.DataFrame, points: List[int]) -> pd.DataFrame:
